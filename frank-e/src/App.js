@@ -32,6 +32,34 @@ var BannerAd = React.createClass({
   }
 });
 
+var CowClicker = React.createClass({
+  getInitialState: function() {
+    return {
+      clicks: 0
+    };
+  },
+
+  onCowClick: function(evt) {
+    this.setState({
+      clicks: this.state.clicks + 1
+    });
+  },
+
+  render: function() {
+    return (
+      <div>
+        <div>Clicks: {this.state.clicks}</div>
+        <img
+          src="http://s3.bypaulshen.com/buildwithreact/cow.png"
+          onClick={this.onCowClick}
+          className="cow"
+        />
+        <p>Click the cow</p>
+      </div>
+    );
+  }
+});
+
 class App extends Component {
   render() {
     return (
@@ -51,6 +79,9 @@ class App extends Component {
         <VacancySign hasvacancy={true} />
         <br/>
         <BannerAd/>
+        <br/>
+        <br/>
+        <CowClicker />
       </div>
     );
   }
