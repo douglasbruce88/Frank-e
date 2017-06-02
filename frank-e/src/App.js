@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './WinkingFrank.gif';
+import PropTypes from 'prop-types';
 import './App.css';
 
 var ipsumText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.';
@@ -10,7 +11,7 @@ var buttonStyle = {
 };
 
 // There are multiple ways to implement this component. This is one.
-class VacancySign extends React.Component {
+class VacancySign extends Component {
   render() {
     var text;
     if (this.props.hasvacancy) {
@@ -22,15 +23,13 @@ class VacancySign extends React.Component {
   }
 };
 
-const NewComponent = (props) => {
+function NewComponent(props) {
   return (
-    <div>
-      test
-    </div>
+    <div>test</div>
   )
 }
 
-class BannerAd2 extends React.Component {
+class BannerAd2 extends Component {
   onMagicClick(evt) {
     alert('TAADAH!')
   }
@@ -40,7 +39,7 @@ class BannerAd2 extends React.Component {
   }
 }
 
-class CowClicker extends React.Component {
+class CowClicker extends Component {
   constructor(props) {
     super(props)
     this.state = { clicks: 0 }
@@ -70,7 +69,8 @@ class CowClicker extends React.Component {
   }
 };
 
-class Board extends React.Component {
+
+class Board extends Component {
   render() {
     var className = "board";
     if (this.props.selected) {
@@ -84,7 +84,11 @@ class Board extends React.Component {
   }
 };
 
-class BoardSwitcher extends React.Component {
+Board.propTypes = {
+  selected: PropTypes.number
+}
+
+class BoardSwitcher extends Component {
   constructor(props) {
     super(props)
     this.state = { selectedIndex: 0 }
@@ -114,6 +118,38 @@ class BoardSwitcher extends React.Component {
   }
 };
 
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date: new Date() };
+
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
 class App extends Component {
   render() {
     return (
@@ -137,6 +173,8 @@ class App extends Component {
         <br />
         <CowClicker />
         <BoardSwitcher numBoards={3} />
+        <br />
+        <Clock />
       </div>
     );
   }
