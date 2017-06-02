@@ -1,3 +1,4 @@
+//@flow
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -9,8 +10,8 @@ var buttonStyle = {
 };
 
 // There are multiple ways to implement this component. This is one.
-var VacancySign = React.createClass({
-  render: function() {
+class VacancySign extends React.Component {
+  render() {
     var text;
     if (this.props.hasvacancy) {
       text = 'Vacancy';
@@ -19,46 +20,99 @@ var VacancySign = React.createClass({
     }
     return <div>{text}</div>;
   }
-});
+};
 
-var BannerAd = React.createClass({
-  onMagicClick: function(evt) {
+const NewComponent = (props) => {
+  return (
+    <div>
+      test
+    </div>
+  )
+}
+
+class BannerAd2 extends React.Component {
+  onMagicClick(evt) {
     alert('TAADAH!')
-  },
-
-  render: function() {
+  }
+  render() {
     // Render the div with an onClick prop (value is a function)
     return <button onClick={this.onMagicClick}>Do Magic</button>
   }
-});
+}
 
-var CowClicker = React.createClass({
-  getInitialState: function() {
-    return {
-      clicks: 0
-    };
-  },
+class CowClicker extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { clicks: 0 }
+  }
 
-  onCowClick: function(evt) {
+  onCowClick = (evt) => {
     this.setState({
       clicks: this.state.clicks + 1
     });
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div>
         <div>Clicks: {this.state.clicks}</div>
         <img
-          src="http://s3.bypaulshen.com/buildwithreact/cow.png"
+          src='http://s3.bypaulshen.com/buildwithreact/cow.png'
+          alt="Cow!"
           onClick={this.onCowClick}
           className="cow"
         />
         <p>Click the cow</p>
+
+        <NewComponent />
       </div>
     );
   }
-});
+};
+
+class Board extends React.Component {
+  render() {
+    var className = "board";
+    if (this.props.selected) {
+      className += " selected";
+    }
+    return (
+      <div className={className}>
+        {this.props.index + 1}
+      </div>
+    );
+  }
+};
+
+class BoardSwitcher extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { selectedIndex: 0 }
+  }
+
+  onToggleClick = (evt) => {
+    this.setState({
+      selectedIndex: (this.state.selectedIndex + 1) % this.props.numBoards
+    });
+  }
+
+  render() {
+    var boards = [];
+    for (var ii = 0; ii < this.props.numBoards; ii++) {
+      var isSelected = ii === this.state.selectedIndex;
+      boards.push(
+        <Board index={ii} selected={isSelected} key={ii} />
+      );
+    }
+
+    return (
+      <div>
+        <div className="boards">{boards}</div>
+        <button onClick={this.onToggleClick}>Toggle</button>
+      </div>
+    );
+  }
+};
 
 class App extends Component {
   render() {
@@ -72,16 +126,17 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <div>
-          <button style = {buttonStyle}>Hello</button>
+          <button style={buttonStyle}>Hello</button>
           <div>{ipsumText}</div>
         </div>
-        <br/>
+        <br />
         <VacancySign hasvacancy={true} />
-        <br/>
-        <BannerAd/>
-        <br/>
-        <br/>
+        <br />
+        <BannerAd2 />
+        <br />
+        <br />
         <CowClicker />
+        <BoardSwitcher numBoards={3} />
       </div>
     );
   }
